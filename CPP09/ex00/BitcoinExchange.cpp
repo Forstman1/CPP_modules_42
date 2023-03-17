@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:08:30 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/17 17:26:32 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:37:43 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include <algorithm>
 
 
-void    BitcoinExchange::setBtcData(std::vector<std::string> &data)
+void    BitcoinExchange::setBtcData(std::deque<std::string> &data)
 {
-    for (std::vector<std::string>::iterator it = data.begin()+1; it != data.end(); it++)
+    for (std::deque<std::string>::iterator it = data.begin()+1; it != data.end(); it++)
     {
-        std::vector<std::string> input = split(*it, ',');
+        std::deque<std::string> input = split(*it, ',');
         double value = atof(input[1].c_str());
         trim(input[0], ' ');
         btc_exchange.insert(std::pair<std::string, double>(input[0], value));
@@ -41,7 +41,7 @@ void    BitcoinExchange::convert(double value, std::string &date)
 
 void   BitcoinExchange::check_date(std::string &date)
 {
-    std::vector<std::string> dates = split(date, '-');
+    std::deque<std::string> dates = split(date, '-');
     trim(dates[2], ' ');
     if (dates.size() != 3)
         throw std::invalid_argument("Error: bad input => " + date);
@@ -88,7 +88,7 @@ int    BitcoinExchange::check_int(std::string &number)
     return 1;
 }
 
-void    BitcoinExchange::check(std::vector<std::string> &data)
+void    BitcoinExchange::check(std::deque<std::string> &data)
 {
     check_date(data[0]);
     trim(data[1], ' ');
@@ -112,15 +112,15 @@ void    BitcoinExchange::check(std::vector<std::string> &data)
 
 
 
-void    BitcoinExchange::ParseData(std::vector<std::string> &lines)
+void    BitcoinExchange::ParseData(std::deque<std::string> &lines)
 {
     allData = lines;
     if (allData[0] != "date | value")
         std::cout << "Error: bad input => " << allData[0] << std::endl;
     
-    for (std::vector<std::string>::iterator it = allData.begin()+1; it != allData.end(); it++)
+    for (std::deque<std::string>::iterator it = allData.begin()+1; it != allData.end(); it++)
     {
-        std::vector<std::string> input = split(*it, '|');
+        std::deque<std::string> input = split(*it, '|');
         if (input.size() > 2)
             std::cout << "Error: too many agruments" << std::endl;
         else if (input.size() < 2)

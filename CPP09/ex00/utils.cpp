@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 15:09:46 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/16 15:58:07 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:36:44 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 
 
-std::vector<std::string> split(std::string s, char c)
+std::deque<std::string> split(std::string s, char c)
 {
     std::string  str;
-    std::vector<std::string> splited;
+    std::deque<std::string> splited;
     int del=0, i =0, p=0, j=0;
     size_t index = s.find_first_not_of(c);
     if (index != std::string::npos)
