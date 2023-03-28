@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 12:33:26 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/18 12:34:32 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/19 18:36:39 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ std::vector<std::string> split(std::string s, char c)
     index = str.find_last_not_of(c);
     if (index != std::string::npos)
         str = str.substr(0, index + 1);
-    for (int i = 0; i < str.length(); i++)
+    for (size_t i = 0; i < str.length(); i++)
 		if (str[i] == c && str[i + 1] != c)
 			del++;
     while (del-- >= 0)

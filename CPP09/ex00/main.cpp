@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:04:12 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/17 23:38:55 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/20 17:00:05 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@
 
 
 
-int main(int argc, char **argv)
+int main(int ac, char **av)
 {
-  
+
     try {
+      
+      if (ac != 2)
+        throw std::invalid_argument("wrong amount of arguments");
+      
       std::ifstream fd;
-      fd.open(argv[1]);
+      fd.open(av[1]);
+      
       std::ifstream fd1;
       fd1.open("data.csv");
       
-      std::deque<std::string> lines;
-      std::deque<std::string> lines1;
+      std::list<std::string> lines;
+      std::list<std::string> lines1;
   
       std::string line;
       BitcoinExchange x;
@@ -41,12 +46,13 @@ int main(int argc, char **argv)
       while (getline(fd1, line))
           if (!line.empty())
 		      lines.push_back(line);
+      
       x.setBtcData(lines);
-      line = "";
       
       while (getline(fd, line))
           if (!line.empty())
 		      lines1.push_back(line);
+        
       x.ParseData(lines1);
     }
     catch (std::exception &e)

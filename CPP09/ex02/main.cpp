@@ -6,12 +6,11 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 22:05:16 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/18 16:55:42 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/20 18:40:02 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
-
 
 void    swap(int &first, int &second)
 {
@@ -22,76 +21,18 @@ void    swap(int &first, int &second)
 }
 
 
-void    insertAlgo(std::vector<int> &Array)
+void    parseData(int argc, char **av)
 {
-    int j = 0;
-    for (int i = 0; i < Array.size(); i++)
+    for (int i =1; i < argc; i++)
     {
-        j = i;
-        while (j > 0 && Array[j-1] > Array[j])
+        std::string input = av[i];
+        for (size_t j = 0; j < input.length(); j++)
         {
-            swap(Array[j], Array[j-1]);
-            j--;
+            if (!isdigit(input[j]))
+                throw std::invalid_argument("Error");
         }
     }
 }
-
-
-std::vector<int> merge(std::vector<int> Array1, std::vector<int> Array2)
-{
-    std::vector<int> Array3;
-
-    while (!Array1.empty() && !Array2.empty())
-    {
-        if (Array1[0] > Array2[0])
-        {
-            Array3.push_back(Array2[0]);
-            Array2.erase(Array2.begin());
-        }
-        else
-        {
-            Array3.push_back(Array1[0]);
-            Array1.erase(Array1.begin());
-        }
-    }
-    while (!Array1.empty())
-    {
-        Array3.push_back(Array1[0]);
-        Array1.erase(Array1.begin());
-    }
-    while (!Array2.empty())
-    {
-        Array3.push_back(Array2[0]);
-        Array2.erase(Array2.begin());
-    }
-    return Array3;
-}
-
-
-
-std::vector<int> merge_sort1(std::vector<int>& arr) {
-    
-    if (arr.size() - 1 <= 15) {
-        insertAlgo(arr);
-        return arr;
-    } else {
-
-        std::vector<int> Array1;
-        std::vector<int> Array2;
-    
-        for (int i = 0 ; i < arr.size()/2; i++)
-            Array1.push_back(arr[i]);
-        for (int i = arr.size()/2 ; i < arr.size(); i++)
-            Array2.push_back(arr[i]);
-            
-        Array1 = merge_sort1(Array1);
-        Array2 = merge_sort1(Array2);
-
-        return (merge(Array1, Array2));
-    }
-}
-
-
 
 int main(int ac, char **av)
 {
@@ -100,22 +41,64 @@ int main(int ac, char **av)
         std::cout << "Error\n";
         return 1;
     }
-    
-    std::vector<int> numbers;
-    std::cout << "Before: ";
-    for (int i =1; i < ac; i++)
-    {
-        std::string input = av[i];
-        numbers.push_back(atoi(input.c_str()));
-        std::cout << input << " ";
-    }
-    std::cout << std::endl;
-    numbers = merge_sort1(numbers);
-    std::cout << "After:  ";
+    try {
+        
+        std::vector<int> save;
+        std::vector<int> numbers1;
+        std::deque<int> numbers2;
+        
+        clock_t start, end;
 
-    for (std::vector<int>::iterator it = numbers.begin(); it != numbers.end(); it++)
-    {
-        std::cout << *it << " ";
+        double time_passed1;
+        double time_passed2;
+        
+        parseData(ac, av);
+        
+        start = clock();
+        sortVect(ac, av, numbers1, save);
+        end = clock();
+        
+        time_passed1 = double(end - start) / CLOCKS_PER_SEC;
+        std::cout << std::fixed << std::setprecision(6);
+
+
+        start = clock();
+        sortDeq(ac, av, numbers2);
+        end = clock();
+        
+        time_passed2 = double(end - start) / CLOCKS_PER_SEC;
+        std::cout << "Before: ";
+        for (std::vector<int>::iterator it = save.begin(); it != save.end(); it++)
+        {
+            if (it < save.begin()+6)
+                std::cout << *it << " ";
+            else if (it == save.begin()+6)
+                std::cout << "[...]";
+            else if (it == save.end()-1)
+                std::cout << *it;
+        }
+        std::cout << std::endl;
+
+        std::cout << "after:  ";
+        for (std::vector<int>::iterator it = numbers1.begin(); it != numbers1.end(); it++)
+        {
+            if (it < numbers1.begin()+6)
+                std::cout << *it << " ";
+            else if (it == numbers1.begin()+6)
+                std::cout << "[...]";
+            else if (it == numbers1.end()-1)
+                std::cout << *it;
+        }
+        std::cout << std::endl;
+        std::cout << "Time to process a range of " << ac-1 << "  elements with std::vector : "  << time_passed1 << " s" << std::endl;
+    
+        std::cout << "Time to process a range of " << ac-1 << "  elements with std::deque  : " << time_passed2 << " s" << std::endl;
+
+
+        
     }
-    std::cout << std::endl;
+    catch (std::exception &e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 }

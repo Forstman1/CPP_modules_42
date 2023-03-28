@@ -6,7 +6,7 @@
 #    By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 22:05:45 by sahafid           #+#    #+#              #
-#    Updated: 2023/03/18 12:36:49 by sahafid          ###   ########.fr        #
+#    Updated: 2023/03/19 18:31:20 by sahafid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ HEADERS = PmergeMe.hpp
 
 CC = c++
 NAME = PmergeMe
-FLAGS = -std=c++98
+FLAGS = -std=c++98 -Wall -Wextra -Werror
 
 all : $(NAME)
 
